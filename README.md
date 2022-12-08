@@ -16,10 +16,6 @@ File names with ".." are not allowed.
 
 Makefiles are generated with qmake and don't use the Qt framework.
 
-Only stack is used.
-
-Error handling leaves a little to be desired.
-
 Extra credit question about incremental file changes not addressed.
 
 ## Building
@@ -147,18 +143,4 @@ Client in Wellington on Raspberry Pi 3 unknown network 11MB/s Down / 11MB/s Up, 
 Started clients at same time and transferred a file of 451,839,315B.
 
 Paekakariki took 53.4s (8.5MB/s) while Wellington took 148.4s (3.0MB/s)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
