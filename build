@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cd client
+qmake
+make
+cd ..
+
+cd server
+qmake
+make
+cd ..
+
+
+

@@ -1,0 +1,219 @@
+//ssize_t server_recv(int sfd, char *buf, int len, int timeout)
+//{
+//    fd_set fds;
+//    int n;
+//    struct timeval tv;
+
+//    // set up the file descriptor set
+//    FD_ZERO(&fds);
+//    FD_SET(sfd, &fds);
+
+//    // set up the struct timeval for the timeout
+//    tv.tv_sec = timeout;
+//    tv.tv_usec = 0;
+
+//    // wait until timeout or data received
+//    n = select(sfd+1, &fds, NULL, NULL, &tv);
+//    if(n == 0) return -2; // timeout!
+//    if(n == -1) return -1; // error
+
+//    // data must be here, so do a normal recv()
+//    return recv(sfd, buf, len, 0);
+//}
+
+
+//probably not use: todo: del
+//ssize_t server_recv(int sfd, char *buf, int len, int timeout);
+
+
+//    len=server_recv(csfd,buf,sizeof(buf),5);
+
+
+//    if(len == -1)
+//    {
+//        // error occurred
+//        perror("server_recv");
+//    }
+//    else if(len == -2)
+//    {
+//        // timeout occurred
+//        fprintf(stderr,"timeout\n");
+//        exit(EXIT_FAILURE);
+//    }
+
+//    tv.tv_sec = 0;
+//    tv.tv_usec = 0;
+//    socklen_t optlen=sizeof(struct timeval);
+//    getsockopt(csfd,SOL_SOCKET,SO_RCVTIMEO,(struct timeval *)&tv,&optlen);
+//    printf("tv.sec=%ld\n",tv.tv_sec);
+
+
+//    struct addrinfo hints;
+//    struct addrinfo *result, *rp;
+//    int sfd, s;
+//    size_t len;
+//    ssize_t nread;
+//    char buf[BUF_SIZE];
+
+//    if (argc < 3) {
+//        fprintf(stderr, "Usage: %s host port msg...\n", argv[0]);
+//        exit(EXIT_FAILURE);
+//    }
+
+//    /* Obtain address(es) matching host/port. */
+
+//    memset(&hints, 0, sizeof(hints));
+//    hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
+//    hints.ai_socktype = SOCK_STREAM;//DGRAM; /* Datagram socket */
+//    hints.ai_flags = 0;
+//    hints.ai_protocol = 0;          /* Any protocol */
+
+//    s = getaddrinfo(argv[1], argv[2], &hints, &result);
+//    if (s != 0) {
+//        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
+//        exit(EXIT_FAILURE);
+//    }
+
+//    /* getaddrinfo() returns a list of address structures.
+//             Try each address until we successfully connect(2).
+//             If socket(2) (or connect(2)) fails, we (close the socket
+//             and) try the next address. */
+
+//    for (rp = result; rp != NULL; rp = rp->ai_next) {
+//        sfd = socket(rp->ai_family, rp->ai_socktype,
+//                     rp->ai_protocol);
+//        if (sfd == -1)
+//            continue;
+
+//        if (connect(sfd, rp->ai_addr, rp->ai_addrlen) != -1)
+//            break;                  /* Success */
+
+//        close(sfd);
+//    }
+
+//    freeaddrinfo(result);           /* No longer needed */
+
+//    if (rp == NULL)
+//    {               /* No address succeeded */
+//        fprintf(stderr, "Could not connect\n");
+//        exit(EXIT_FAILURE);
+//    }
+
+////    cbuf_t *cbuf;
+////    cbuf = calloc(1, sizeof(*cbuf));
+////    cbuf->sfd=sfd;
+
+//    cbuf_t cbuf;
+//    memset(&cbuf, 0, sizeof(cbuf));
+//    cbuf.sfd=sfd;
+
+
+
+//    while(1)
+//    {
+//        int res=sgetline(&cbuf,buf,BUF_SIZE);
+//        if(res<=0)break;
+//        if(write(STDOUT_FILENO,buf,strlen(buf))==-1)//need write all
+//        {
+//            perror("main");
+//            exit(EXIT_FAILURE);
+//        }
+//    }
+
+//    //free(cbuf);
+//    exit(0);
+
+
+
+//    FILE *fp;
+//    fp=fdopen(sfd, "r");
+//    setvbuf(fp, buf,_IOLBF,BUF_SIZE);
+
+//    while(1)
+//    {
+//        fgets(buf,BUF_SIZE,fp);
+//        puts(buf);
+//        if(strlen(buf)<=0)break;
+//    }
+//    exit(0);
+
+
+
+//    while(1)
+//    {
+//        nread = read(sfd, buf, BUF_SIZE);
+//        if(nread==-1)
+//        {
+//            perror("read");
+//            exit(EXIT_FAILURE);
+//        }
+//        if(nread==0)break;
+//        write(STDOUT_FILENO,buf,nread);
+//    }
+
+//    fflush(stdout);
+
+
+//    exit(EXIT_SUCCESS);
+
+//typedef struct cbuf
+//{
+//    char buf[BUF_SIZE];
+//    int sfd;
+//    int rpos, wpos;
+//} cbuf_t;
+
+//int sgetline(cbuf_t *cbuf,char *buf,int buf_size)
+//{
+//    int k=0;
+//    int nread;
+//    while(1)
+//    {
+
+//        while(cbuf->rpos!=cbuf->wpos)
+//        {
+
+//            /*
+//            //if you wanted to drop on line too large
+//            //then something like this would work
+//            if(k==buf_size)
+//            {
+//                fprintf(stderr, "line too large, dropping\n");
+//            }
+//            if(k>=buf_size)
+//            {
+//                cbuf->rpos++;
+//                if(cbuf->buf[cbuf->rpos-1]=='\n')
+//                {
+//                    k=0;
+//                }
+//                continue;
+//            }
+//            */
+
+//            if(k>=buf_size)
+//            {
+//                fprintf(stderr, "line too large, failing\n");
+//                return -1;
+//            }
+
+//            buf[k++]=cbuf->buf[cbuf->rpos++];
+//            if(buf[k-1]=='\n')
+//            {
+//                buf[k]=0;
+//                return k;
+//            }
+
+//        }
+
+//        cbuf->wpos=0;
+//        cbuf->rpos=0;
+//        nread=read(cbuf->sfd,cbuf->buf,BUF_SIZE);
+//        if(nread<=0)
+//        {
+//            return nread;
+//        }
+//        cbuf->wpos=nread;
+
+//    }
+//}
