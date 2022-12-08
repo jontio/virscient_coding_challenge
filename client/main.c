@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <time.h>
 
 int main(int argc, char *argv[])
 {
@@ -31,11 +32,21 @@ int main(int argc, char *argv[])
         sio_print_address("connected to",&addr);
     }
 
+    clock_t begin = clock();
+
     if(protocol_client_process(sfd,&info)==-1)
     {
         perror("main: protocol_client_process");
         client_disconnect(sfd);
         exit(EXIT_FAILURE);
+    }
+
+    clock_t end = clock();
+    double time_spent = (double)(end - begin);
+
+    if((!info.stdout_flag)&&(!info.list_filenames_flag))
+    {
+        printf("time taken %0.1fs\n",((double)(int)(time_spent/10000.0))/10.0);
     }
 
     client_disconnect(sfd);
