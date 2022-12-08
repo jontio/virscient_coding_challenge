@@ -25,7 +25,7 @@ int parse_program_args(int argc, char *argv[], parse_program_args_info_t *info)
        (argc==2&&(strcmp(argv[1],"?")==0))
             )
     {
-        printf("Usage [-h host] [-p port] [-d directory] [-s] [-l] [-t] [-f filename].\n");
+        printf("Usage: %s [-h host] [-p port] [-d directory] [-s] [-l] [-t] [-f filename].\n",argv[0]);
         printf("-h host: server host address. (default is %s)\n",info->server_host);
         printf("-p port: server host port. (default is %s)\n",info->server_port);
         printf("-d directory: path where files are saved. (default is \'%s\')\n",info->dir);

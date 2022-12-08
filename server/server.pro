@@ -20,5 +20,4 @@ HEADERS += \
     protocol_server.h \
     server.h
 
-DISTFILES += \
-    junk
+DISTFILES +=

@@ -23,7 +23,7 @@ int parse_program_args(int argc, char *argv[], parse_program_args_info_t *info)
        (argc==2&&(strcmp(argv[1],"?")==0))
             )
     {
-        printf("Usage [-n name] [-p port] [-d directory] [-m max_nclients].\n");
+        printf("Usage: %s [-n name] [-p port] [-d directory] [-m max_nclients].\n",argv[0]);
         if(info->server_name==NULL)
         {
             printf("-n name: server name. (default is ANY)\n");
